@@ -1,0 +1,31 @@
+* Primitive recursive functions in Haskell Typeclasses
+
+  Trying to implement the PRF vararg combinators in Haskell by using Typeclass [[https://wiki.haskell.org/Varargs][trick]].
+
+  - =PRF_General.hs= -- generic implementation that have a lot of problem with ambiguity of typeclass
+    parameters.
+  - =PRF_Int.hs= -- similar to generic implementation except for some combinators always return =Int=
+    that reduces some problem parameters of typeclasses.
+
+** Example
+#+BEGIN_SRC haskell
+-- dec
+dec :: Int -> Int
+dec = c2 (r z prj1) prj1' prj1'
+  where
+    prj1' = prj1 :: Int -> Int
+
+-- add
+add :: Int -> Int -> Int
+add = r prj1 (c inc (prj2 :: Int -> Int -> Int -> Int))
+
+-- mul
+mul :: Int -> Int -> Int
+mul = r z mulg
+  where
+    prj2', prj3' :: Int -> Int -> Int -> Int
+    prj2' = prj2
+    prj3' = prj3
+    mulg = c2 add prj2' prj3'
+#+END_SRC
+ 
